@@ -1,0 +1,4 @@
+Starting device mode switch...
+Vendor ID: 0x1234, Product ID: 0x5678
+Error finding USB device
+Error: USB device not found

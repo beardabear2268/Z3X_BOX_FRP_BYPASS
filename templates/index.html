@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USB Operations Interface</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1 { text-align: center; }
+        form { display: flex; flex-direction: column; gap: 10px; }
+        label { font-weight: bold; }
+        input, select { padding: 5px; }
+        button { padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+        #result { margin-top: 20px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>USB Operations Interface</h1>
+    <form id="operationForm">
+        <label for="vendor_id">Vendor ID:</label>
+        <input type="text" id="vendor_id" name="vendor_id" value="0403" required>
+        
+        <label for="product_id">Product ID:</label>
+        <input type="text" id="product_id" name="product_id" value="0011" required>
+        
+        <label for="mode">Operation Mode:</label>
+        <select id="mode" name="mode">
+            <option value="0">Modem Mode</option>
+            <option value="1">Normal Mode</option>
+            <option value="2">CASS</option>
+            <option value="3">Change UDID</option>
+            <option value="4">Disable MTK Secure Boot</option>
+            <option value="5">SEC CTRL Status</option>
+            <option value="6">Flash FRP.bin</option>
+        </select>
+        
+        <button type="submit">Execute Operation</button>
+    </form>
+    
+    <div id="result"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#operationForm').submit(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '/execute',
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            $('#result').html('<h3>Operation Output:</h3>' + response.output + 
+                                              '<h3>Operation Log:</h3>' + response.log);
+                        } else {
+                            $('#result').html('<h3>Error:</h3>' + response.error);
+                        }
+                    },
+                    error: function() {
+                        $('#result').html('<h3>Error:</h3>An unexpected error occurred.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
