@@ -1,0 +1,6 @@
+pyserial==3.5
+pyusb==1.2.1
+serial
+libusb==1.0.27.post1
+pyusb_libusb1_backend==0.0.1
+libusb1==3.1.0
